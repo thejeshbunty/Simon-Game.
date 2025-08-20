@@ -1,4 +1,4 @@
-alert("hello");
+
 var buttonColours = ["red", "blue", "green", "yellow"];
 
 gamePattern = [];
@@ -85,3 +85,4 @@ function startOver() {
   gamePattern = [];
   started = false
 }
+
