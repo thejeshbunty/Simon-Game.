@@ -6,18 +6,16 @@ var userClickedPattern = [];
 var started = false;
 var level = 0;
 
-// Keyboard: Start with A, restart with any key
+// Desktop: Start with A, restart with any key after Game Over
 $(document).keydown(function(event) {
   if (!started) {
-    if (event.key === "a" || event.key === "A") {
+    if (event.key === "a" || event.key === "A" || $("#level-title").text().includes("Game Over")) {
       startGame();
     }
-  } else if ($("#level-title").text().includes("Game Over")) {
-    startGame(); // restart with any key
   }
 });
 
-// Mobile: Start or restart with touch
+// Mobile: Start or restart with first tap anywhere
 $(document).on("touchstart", function() {
   if (!started || $("#level-title").text().includes("Game Over")) {
     startGame();
@@ -43,7 +41,7 @@ function checkAnswer(currentLevel) {
   } else {
     playSound("wrong");
     $("body").addClass("game-over");
-    $("#level-title").text("Game Over, Press Any Key or Tap to Restart");
+    $("#level-title").text("Game Over, Tap Anywhere or Press Any Key to Restart");
 
     setTimeout(function() {
       $("body").removeClass("game-over");
