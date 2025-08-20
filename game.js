@@ -59,7 +59,7 @@ function nextSequence(){
 
     $("#" + randomChosenColour).fadeIn(100).fadeOut(100).fadeIn(100);
 
-  //3. Use Google/Stackoverflow to figure out how you can use Javascript to play the sound for the button colour selected in step 1.
+
     playSound(randomChosenColour);
     
 
@@ -85,4 +85,5 @@ function startOver() {
   gamePattern = [];
   started = false
 }
+
 
