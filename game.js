@@ -6,20 +6,21 @@ var userClickedPattern = [];
 var started = false;
 var level = 0;
 
+// Keyboard: Start with A, restart with any key
 $(document).keydown(function(event) {
   if (!started) {
-    // First time: only start with A
     if (event.key === "a" || event.key === "A") {
-      $("#level-title").text("Level " + level);
-      nextSequence();
-      started = true;
+      startGame();
     }
   } else if ($("#level-title").text().includes("Game Over")) {
-    // After Game Over: restart with any key
-    startOver();
-    $("#level-title").text("Level " + level);
-    nextSequence();
-    started = true;
+    startGame(); // restart with any key
+  }
+});
+
+// Mobile: Start or restart with touch
+$(document).on("touchstart", function() {
+  if (!started || $("#level-title").text().includes("Game Over")) {
+    startGame();
   }
 });
 
@@ -42,14 +43,13 @@ function checkAnswer(currentLevel) {
   } else {
     playSound("wrong");
     $("body").addClass("game-over");
-    $("#level-title").text("Game Over, Press Any Key to Restart");
+    $("#level-title").text("Game Over, Press Any Key or Tap to Restart");
 
     setTimeout(function() {
       $("body").removeClass("game-over");
     }, 200);
 
-    // mark as game over
-    started = true; // keep true so restart logic triggers
+    started = false; // allow restart
   }
 }
 
@@ -77,14 +77,15 @@ function playSound(name) {
 
 function animatePress(currentColour) {
   $("#" + currentColour).addClass("pressed");
-
   setTimeout(function() {
     $("#" + currentColour).removeClass("pressed");
   }, 100);
 }
 
-function startOver() {
+function startGame() {
   level = 0;
   gamePattern = [];
-  started = false;
+  started = true;
+  $("#level-title").text("Level " + level);
+  nextSequence();
 }
