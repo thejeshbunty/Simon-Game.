@@ -8,15 +8,21 @@ var started=false;
 var level=0;
 
 $(document).keydown(function(event) {
-    if(event.key  === "a" || event.key === "A"){
-         if(!started){
-        $("#level-title").text("Level "+ level);
-        nextSequence();
-        started=true;
-        }
+  if (!started) {
+    
+    if (event.key === "a" || event.key === "A") {
+      $("#level-title").text("Level " + level);
+      nextSequence();
+      started = true;
     }
+  } else if ($("#level-title").text().includes("Game Over")) {
+    
+    startOver();
+    $("#level-title").text("Level " + level);
+    nextSequence();
+    started = true;
+  }
 });
-
 
 $(".btn").click(function()  {
     var userChosenColour = $(this).attr("id");
@@ -61,9 +67,6 @@ function nextSequence(){
 
 
     playSound(randomChosenColour);
-    
-
-  
 }
 
 function playSound(name){
@@ -73,10 +76,10 @@ function playSound(name){
 }
 
 function animatePress(currentColour){
-    $("#"+"currentColour").addClass("pressed");
+    $("#" + currentColour").addClass("pressed");
 
     setTimeout(function() {
-                $("#"+"currentColour").removeClass(".pressed");
+        $("#" + currentColour).removeClass(".pressed");
     },100)
 }
 
@@ -85,5 +88,6 @@ function startOver() {
   gamePattern = [];
   started = false
 }
+
 
 
