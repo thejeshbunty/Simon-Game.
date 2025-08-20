@@ -1,28 +1,32 @@
 var buttonColours = ["red", "blue", "green", "yellow"];
-
 var gamePattern = [];
 var userClickedPattern = [];
 
 var started = false;
 var level = 0;
 
-// Desktop: Start with A, restart with any key after Game Over
-$(document).keydown(function(event) {
-  if (!started) {
-    if (event.key === "a" || event.key === "A" || $("#level-title").text().includes("Game Over")) {
-      startGame();
-    }
-  }
-});
+// Detect mobile or desktop and set title
+if (/Mobi|Android/i.test(navigator.userAgent)) {
+  $("#level-title").text("Tap to Start the Game");
+} else {
+  $("#level-title").text("Press Any Key to Start the Game");
+}
 
-// Mobile: Start or restart with first tap anywhere
-$(document).on("touchstart", function() {
+// Keyboard: Start or restart
+$(document).keydown(function () {
   if (!started || $("#level-title").text().includes("Game Over")) {
     startGame();
   }
 });
 
-$(".btn").click(function() {
+// Mobile: Start or restart
+$(document).on("touchstart", function () {
+  if (!started || $("#level-title").text().includes("Game Over")) {
+    startGame();
+  }
+});
+
+$(".btn").click(function () {
   var userChosenColour = $(this).attr("id");
   userClickedPattern.push(userChosenColour);
 
@@ -34,16 +38,21 @@ $(".btn").click(function() {
 function checkAnswer(currentLevel) {
   if (gamePattern[currentLevel] === userClickedPattern[currentLevel]) {
     if (userClickedPattern.length === gamePattern.length) {
-      setTimeout(function() {
+      setTimeout(function () {
         nextSequence();
       }, 1000);
     }
   } else {
     playSound("wrong");
     $("body").addClass("game-over");
-    $("#level-title").text("Game Over, Tap Anywhere or Press Any Key to Restart");
 
-    setTimeout(function() {
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+      $("#level-title").text("Game Over, Tap to Restart");
+    } else {
+      $("#level-title").text("Game Over, Press Any Key to Restart");
+    }
+
+    setTimeout(function () {
       $("body").removeClass("game-over");
     }, 200);
 
@@ -75,7 +84,7 @@ function playSound(name) {
 
 function animatePress(currentColour) {
   $("#" + currentColour).addClass("pressed");
-  setTimeout(function() {
+  setTimeout(function () {
     $("#" + currentColour).removeClass("pressed");
   }, 100);
 }
